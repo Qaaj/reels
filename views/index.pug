@@ -3,13 +3,21 @@ extends layout
 block content
   .max-w-7xl.mx-auto.p-6
     h1.text-2xl.font-bold.mb-6 Saved Reels Viewer
-
+    // Search Bar
+    div(class="mb-4")
+      input#searchInput(
+        type="text"
+        placeholder="Search captions or metadata…"
+        class="w-full p-2 rounded bg-slate-900 text-white border border-slate-700 focus:outline-none focus:border-emerald-400"
+        oninput="filterReels()"
+      )
     // Homepage grid
     div(class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4")
       each reel in reels
         button(
           class="group bg-slate-800 rounded-lg border border-slate-700 overflow-hidden"
           onclick=`openModal('${reel.id}')`
+          data-reel-id=reel.id
         )
           if reel.thumb
             img(src=reel.thumb class="aspect-[3/4] object-cover w-full h-full")

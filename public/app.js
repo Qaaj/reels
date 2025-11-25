@@ -174,3 +174,49 @@ document.addEventListener("keydown", (e) => {
     prevMediaOrPost();
   }
 });
+
+function filterReels() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+
+  // all Reel DOM buttons
+  const buttons = document.querySelectorAll("[data-reel-id]");
+
+  buttons.forEach(btn => {
+    const id = btn.dataset.reelId;
+    const reel = window.REELS.find(r => r.id === id);
+
+    if (!reel) return;
+
+    const caption = (reel.caption || "").toLowerCase();
+    const metadataStr = JSON.stringify(reel.metadata || {}).toLowerCase();
+
+    const matches =
+      caption.includes(q) ||
+      metadataStr.includes(q) ||
+      id.toLowerCase().includes(q);
+
+    btn.style.display = matches ? "" : "none";
+  });
+}
+// ===== Global Keyboard Controls =====
+document.addEventListener("keydown", (e) => {
+  if (modal.classList.contains("hidden")) return;
+
+  // Close modal with ESC
+  if (e.key === "Escape") {
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalVideo.src = "";
+    modal.classList.add("hidden");
+    return;
+  }
+
+  // Toggle video play/pause with SPACE
+  if (e.key === " " || e.code === "Space") {
+    if (!modalVideo.classList.contains("hidden")) {
+      if (modalVideo.paused) modalVideo.play();
+      else modalVideo.pause();
+      e.preventDefault(); // prevent scroll
+    }
+  }
+});
