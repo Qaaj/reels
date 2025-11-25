@@ -1,0 +1,14 @@
+total 288
+drwxr-xr-x@   13 janjorissen  staff   416B Nov 25 16:38 .
+drwxr-xr-x    34 janjorissen  staff   1.1K Nov 25 16:04 ..
+-rw-r--r--@    1 janjorissen  staff   6.0K Nov 25 16:26 .DS_Store
+drwxr-xr-x@    9 janjorissen  staff   288B Nov 25 16:36 .git
+-rw-r--r--@    1 janjorissen  staff    17B Nov 25 16:06 .gitignore
+-rw-r--r--     1 janjorissen  staff     0B Nov 25 16:38 %
+drwxr-xr-x  1313 janjorissen  staff    41K Nov 25 16:11 data
+drwxr-xr-x   149 janjorissen  staff   4.7K Nov 25 16:12 node_modules
+-rw-r--r--     1 janjorissen  staff   123K Nov 25 16:14 package-lock.json
+-rw-r--r--     1 janjorissen  staff   584B Nov 25 16:12 package.json
+drwxr-xr-x@    3 janjorissen  staff    96B Nov 25 16:13 public
+-rw-r--r--@    1 janjorissen  staff   2.1K Nov 25 16:36 server.js
+drwxr-xr-x@    4 janjorissen  staff   128B Nov 25 16:13 views

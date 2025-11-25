@@ -1,0 +1,28 @@
+{
+  "name": "reels",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qaaj/reels.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Qaaj/reels/issues"
+  },
+  "homepage": "https://github.com/Qaaj/reels#readme",
+  "dependencies": {
+    "@koa/router": "^14.0.0",
+    "koa": "^3.1.1",
+    "koa-mount": "^4.2.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^8.1.0",
+    "pug": "^3.0.3"
+  }
+}

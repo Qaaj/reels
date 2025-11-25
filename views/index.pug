@@ -1,0 +1,55 @@
+extends layout
+
+block content
+  .max-w-7xl.mx-auto.p-6
+    h1.text-2xl.font-bold.mb-6 Saved Reels Viewer
+
+    // Homepage grid
+    div(class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4")
+      each reel in reels
+        button(
+          class="group bg-slate-800 rounded-lg border border-slate-700 overflow-hidden"
+          onclick=`openModal('${reel.id}')`
+        )
+          if reel.thumb
+            img(src=reel.thumb class="aspect-[3/4] object-cover w-full h-full")
+          else
+            div(class="aspect-[3/4] bg-slate-700 w-full h-full")
+
+          div(class="p-2 text-xs flex justify-between")
+            span(class="font-mono")= reel.id
+            if reel.media.some(m => m.mp4)
+              span(class="text-emerald-400") Video
+            else
+              span(class="text-slate-400") Image
+
+  // ============================
+  // MODAL (must be inside block!)
+  // ============================
+  #modal.hidden(class="fixed inset-0 bg-black/70 z-40 flex items-center justify-center p-4")
+    .modal-inner(class="bg-slate-800 rounded-xl border border-slate-600 max-w-6xl w-full p-4 flex gap-4")
+
+      // LEFT COLUMN
+      .flex-1
+        h2#modalTitle(class="text-xl font-bold mb-2")
+
+        #mediaContainer(class="bg-black rounded mb-4 flex items-center justify-center", style="height:70vh")
+          video#modalVideo(class="hidden max-h-full" controls)
+          img#modalImage(class="hidden max-h-full object-contain")
+
+        // Thumbnail strip (MUST be here)
+        #thumbStrip(class="flex gap-2 overflow-x-auto p-2 bg-slate-900 rounded")
+
+      // RIGHT COLUMN
+      .w-80.flex.flex-col.gap-4
+        div
+          h3(class="font-semibold mb-1") Caption
+          pre#modalCaption(class="text-xs bg-slate-900 p-2 rounded max-h-40 overflow-auto")
+
+        div
+          h3(class="font-semibold mb-1") Metadata
+          pre#modalMeta(class="text-xs bg-slate-900 p-2 rounded max-h-60 overflow-auto")
+
+  // Inject data
+  script.
+    window.REELS = !{JSON.stringify(reels)};
