@@ -9,65 +9,164 @@ const modalVideo = document.getElementById("modalVideo");
 const modalImage = document.getElementById("modalImage");
 const thumbStrip = document.getElementById("thumbStrip");
 
+let currentReelIndex = 0;
+let currentMediaIndex = 0;
+
 // ======================
 // OPEN MODAL
 // ======================
 function openModal(id) {
-    const reel = window.REELS.find(r => r.id === id);
-    if (!reel) {
-        console.warn("No reel matches ID:", id);
-        return;
-    }
+  const reelIndex = window.REELS.findIndex(r => r.id === id);
+  if (reelIndex === -1) return;
 
-    modalTitle.textContent = reel.id;
-    modalCaption.textContent = reel.caption;
-    modalMeta.textContent = JSON.stringify(reel.metadata, null, 2);
+  currentReelIndex = reelIndex;
+  const reel = window.REELS[reelIndex];
 
-    // Clear thumbnail strip
-    thumbStrip.innerHTML = "";
+  // Always start with first media item
+  currentMediaIndex = 0;
+  if (!reel) {
+    console.warn("No reel matches ID:", id);
+    return;
+  }
 
-    reel.media.forEach(item => {
-        const btn = document.createElement("button");
-        btn.className = "w-20 h-20 rounded overflow-hidden border border-slate-600";
+  modalTitle.textContent = reel.caption;
+  modalCaption.textContent = reel.caption;
 
-        const img = document.createElement("img");
-        img.src = item.jpg;
-        img.className = "object-cover w-full h-full";
+  const shortcode = reel.metadata?.node?.shortcode;
+  if (shortcode) {
+    modalTitle.onclick = () => {
+      window.open(`https://www.instagram.com/p/${shortcode}/`, "_blank");
+    };
+    modalTitle.classList.add("cursor-pointer", "text-blue-400", "hover:underline");
+  } else {
+    modalTitle.onclick = null;
+    modalTitle.classList.remove("cursor-pointer", "text-blue-400", "hover:underline");
+  }
 
-        btn.appendChild(img);
-        btn.onclick = () => showMedia(item);
-        thumbStrip.appendChild(btn);
+  // Clear thumbnail strip
+  thumbStrip.innerHTML = "";
+
+  // If only one item → hide strip
+  if (reel.media.length <= 1) {
+    thumbStrip.classList.add("hidden");
+  } else {
+    thumbStrip.classList.remove("hidden");
+
+    // Build thumbnails
+    reel.media.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.className =
+        "w-20 h-20 rounded overflow-hidden border border-slate-600";
+
+      const img = document.createElement("img");
+      img.src = item.jpg;
+      img.className = "object-cover w-full h-full";
+
+      btn.appendChild(img);
+      btn.onclick = () => showMedia(item);
+      thumbStrip.appendChild(btn);
     });
+  }
 
-    // Show first media automatically
-    if (reel.media.length > 0) {
-        showMedia(reel.media[0]);
-    }
+  // Show first media automatically
+  if (reel.media.length > 0) {
+    showMedia(reel.media[0]);
+  }
 
-    modal.classList.remove("hidden");
+  modal.classList.remove("hidden");
+}
+
+function showMediaByIndex(reel, index) {
+  // clamp index
+  if (index < 0) index = 0;
+  if (index >= reel.media.length) index = reel.media.length - 1;
+
+  currentMediaIndex = index;
+  const item = reel.media[index];
+
+  // Stop any previous video
+  modalVideo.pause();
+  modalVideo.currentTime = 0;
+  modalVideo.classList.add("hidden");
+  modalImage.classList.add("hidden");
+
+  if (item.mp4) {
+    modalVideo.src = item.mp4;
+    modalVideo.classList.remove("hidden");
+    modalVideo.play().catch(() => { });
+  } else {
+    modalImage.src = item.jpg;
+    modalImage.classList.remove("hidden");
+  }
 }
 
 // ======================
 // SHOW MEDIA
 // ======================
 function showMedia(item) {
-    modalVideo.classList.add("hidden");
-    modalImage.classList.add("hidden");
-
-    if (item.mp4) {
-        modalVideo.src = item.mp4;
-        modalVideo.classList.remove("hidden");
-    } else {
-        modalImage.src = item.jpg;
-        modalImage.classList.remove("hidden");
-    }
+  const reel = window.REELS[currentReelIndex];
+  const index = reel.media.indexOf(item);
+  if (index !== -1) {
+    showMediaByIndex(reel, index);
+  }
 }
 
 // ======================
 // CLOSE MODAL (click background)
 // ======================
 modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.classList.add("hidden");
-    }
+  if (e.target === modal) {
+    // Stop any playing video
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalVideo.src = "";  // unload video
+
+    modal.classList.add("hidden");
+  }
+});
+
+function nextMediaOrPost() {
+  const reels = window.REELS;
+  const reel = reels[currentReelIndex];
+
+  if (currentMediaIndex < reel.media.length - 1) {
+    // go to next media
+    showMediaByIndex(reel, currentMediaIndex + 1);
+    return;
+  }
+
+  // move to next reel
+  if (currentReelIndex < reels.length - 1) {
+    openModal(reels[currentReelIndex + 1].id);
+  }
+}
+
+function prevMediaOrPost() {
+  const reels = window.REELS;
+  const reel = reels[currentReelIndex];
+
+  if (currentMediaIndex > 0) {
+    // go to previous media
+    showMediaByIndex(reel, currentMediaIndex - 1);
+    return;
+  }
+
+  // move to previous reel
+  if (currentReelIndex > 0) {
+    const prevReel = reels[currentReelIndex - 1];
+    openModal(prevReel.id);
+
+    // jump to the LAST media of previous reel
+    const lastIndex = prevReel.media.length - 1;
+    showMediaByIndex(prevReel, lastIndex);
+  }
+}
+document.addEventListener("keydown", (e) => {
+  if (modal.classList.contains("hidden")) return;
+
+  if (e.key === "ArrowRight") {
+    nextMediaOrPost();
+  } else if (e.key === "ArrowLeft") {
+    prevMediaOrPost();
+  }
 });
