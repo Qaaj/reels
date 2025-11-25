@@ -32,7 +32,7 @@ block content
       // LEFT COLUMN
       .flex-1.min-w-0.flex.flex-col
         #mediaContainer(
-          class="flex items-center justify-center bg-black rounded mb-4 h-[90vh] max-h-[90vh] w-full"
+          class="flex items-center justify-center bg-black rounded mb-4 h-[80vh] max-h-[90vh] w-full"
         )
           video#modalVideo.hidden(class="max-h-full max-w-full object-contain" controls)
           img#modalImage.hidden(class="max-h-full max-w-full object-contain")
@@ -41,7 +41,9 @@ block content
 
       // RIGHT COLUMN
       .w-80.flex.flex-col.min-w-0
-        h2#modalTitle(class="text-xl font-bold mb-4 truncate")
+        h2#modalTitle(
+        class="text-xl font-bold mb-4 truncate w-full block whitespace-nowrap overflow-hidden text-ellipsis"
+      )
         pre#modalCaption(
           class="text-sm bg-slate-900 p-3 rounded flex-1 overflow-y-auto whitespace-pre-wrap leading-snug"
         )

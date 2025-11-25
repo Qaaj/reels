@@ -45,12 +45,16 @@ function openModal(id) {
 
   // Clear thumbnail strip
   thumbStrip.innerHTML = "";
-
+  const mediaContainer = document.getElementById("mediaContainer");
   // If only one item → hide strip
   if (reel.media.length <= 1) {
     thumbStrip.classList.add("hidden");
+    mediaContainer.style.height = "90vh";
+
   } else {
     thumbStrip.classList.remove("hidden");
+    mediaContainer.style.height = "80vh";
+
 
     // Build thumbnails
     reel.media.forEach((item) => {
