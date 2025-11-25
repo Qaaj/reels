@@ -27,7 +27,7 @@ block content
         )
    
     // Homepage grid
-    div(class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4")
+    div(class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(var(--thumbSize, 150px), 1fr));")
       each reel in reels
         button(
           class="group bg-slate-800 rounded-lg border border-slate-700 overflow-hidden"
@@ -68,7 +68,7 @@ block content
         class="text-xl font-bold mb-4 truncate w-full block whitespace-nowrap overflow-hidden text-ellipsis"
       )
         pre#modalCaption(
-          class="text-sm bg-slate-900 p-3 rounded flex-1 overflow-y-auto whitespace-pre-wrap leading-snug"
+          class="text-sm bg-slate-900 p-3 rounded h-96 overflow-y-auto whitespace-pre-wrap leading-snug"
         )
         //- div
         //-   h3(class="font-semibold mb-1") Metadata

@@ -1,0 +1,1 @@
+for f in *.xz; do xz -d "$f"; done
