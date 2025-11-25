@@ -32,7 +32,9 @@ function openModal(id) {
   modalTitle.textContent = reel.caption;
   modalCaption.textContent = reel.caption;
 
-  const shortcode = reel.metadata?.node?.shortcode;
+  const shortcode = reel.metadata?.shortcode;
+
+  
   if (shortcode) {
     modalTitle.onclick = () => {
       window.open(`https://www.instagram.com/p/${shortcode}/`, "_blank");
@@ -214,6 +216,8 @@ function updateThumbSize() {
       img.style.objectFit = "cover";
     }
   });
+
+  document.documentElement.style.setProperty("--thumbSize", size + "px");
 }
 // ===== Global Keyboard Controls =====
 document.addEventListener("keydown", (e) => {
