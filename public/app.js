@@ -198,6 +198,23 @@ function filterReels() {
     btn.style.display = matches ? "" : "none";
   });
 }
+
+function updateThumbSize() {
+  const size = document.getElementById("thumbSize").value;
+  const buttons = document.querySelectorAll("[data-reel-id]");
+
+  buttons.forEach((btn) => {
+    btn.style.width = size + "px";
+    btn.style.height = size + "px";
+
+    const img = btn.querySelector("img");
+    if (img) {
+      img.style.width = "100%";
+      img.style.height = "100%";
+      img.style.objectFit = "cover";
+    }
+  });
+}
 // ===== Global Keyboard Controls =====
 document.addEventListener("keydown", (e) => {
   if (modal.classList.contains("hidden")) return;

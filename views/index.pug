@@ -4,13 +4,28 @@ block content
   .max-w-7xl.mx-auto.p-6
     h1.text-2xl.font-bold.mb-6 Saved Reels Viewer
     // Search Bar
-    div(class="mb-4")
+
+    div(class="mb-4 flex items-center gap-4")
+      // Search Input
       input#searchInput(
         type="text"
         placeholder="Search captions or metadata…"
-        class="w-full p-2 rounded bg-slate-900 text-white border border-slate-700 focus:outline-none focus:border-emerald-400"
+        class="flex-1 p-2 rounded bg-slate-900 text-white border border-slate-700 focus:outline-none focus:border-emerald-400"
         oninput="filterReels()"
       )
+
+      // Thumbnail Size Slider
+      div(class="flex items-center gap-2")
+        label(for="thumbSize" class="text-slate-300 text-sm") Size
+        input#thumbSize(
+          type="range"
+          min="80"
+          max="300"
+          value="150"
+          class="accent-emerald-500 cursor-pointer"
+          oninput="updateThumbSize()"
+        )
+   
     // Homepage grid
     div(class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4")
       each reel in reels
